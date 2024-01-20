@@ -6,7 +6,7 @@ import Btn from "../Btn";
 import GroupCard from "../Group/GroupCard";
 import Message from "../Group/Message";
 import { useAuth } from "../context/AuthContext";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../routes/RootNavigator";
 
 enum Status {
   LOADING = "loading",

@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "nativewind";
 import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../routes/RootNavigator";
 import { useAuth } from "../context/AuthContext";
 
 const StyledView = styled(View);

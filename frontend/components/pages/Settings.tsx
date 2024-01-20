@@ -3,7 +3,7 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList } from "../routes/RootNavigator";
 
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);

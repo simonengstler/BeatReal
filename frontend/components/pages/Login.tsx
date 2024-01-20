@@ -1,8 +1,8 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "nativewind";
 import React, { useState } from "react";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
-import { RootStackParamList } from "../../App";
+import { Pressable, Text, TextInput, View } from "react-native";
+import { RootStackParamList } from "../routes/BottomNavigator";
 import { useAuth } from "../context/AuthContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;
@@ -50,19 +50,13 @@ export default function LoginPage({ navigation }: Props) {
           onPress={() => {
             try {
               signIn(email, password);
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Main" }],
-              });
+              navigation.navigate("CreateUsername");
             } catch (e) {
               console.warn("sign in failed, attempting to sign up now");
             }
             try {
               signUp(email, password);
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "Main" }],
-              });
+              navigation.navigate("CreateUsername");
             } catch (e) {
               console.error("sign up failed", e);
             }

@@ -1,106 +1,16 @@
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
-import CreateGroupPage from "./components/pages/CreateGroup";
-import ExplorePage from "./components/pages/Explore";
-import MyGroupsPage from "./components/pages/MyGroups";
-import LandingPage from "./components/pages/Landing";
-import LoginPage from "./components/pages/Login";
 import { AuthProvider } from "./components/context/AuthContext";
-import GroupDetailsPage from "./components/pages/GroupDetails";
-import SettingsPage from "./components/pages/Settings";
+import { RootNavigator } from "./components/routes/RootNavigator";
 
-export type RootStackParamList = {
-  Landing: undefined;
-  Main: undefined;
-  CreateGroup: undefined;
-  Login: undefined;
-  GroupDetails: undefined;
-  Settings: undefined;
-  "My Groups": undefined;
-  Explore: undefined;
-};
-
-const RootStack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator<RootStackParamList>();
-
-function TabNavigator() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen
-        name="My Groups"
-        component={MyGroupsPage}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="group" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Explore"
-        component={ExplorePage}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="explore" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={SettingsPage}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="settings" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
-  );
-}
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <RootStack.Navigator
-          initialRouteName="Landing"
-          screenOptions={{
-            headerLeft: () => null,
-          }}
-        >
-          <RootStack.Screen
-            name="Landing"
-            options={{
-              header: () => null,
-            }}
-            component={LandingPage}
-          />
-          <RootStack.Screen
-            name="CreateGroup"
-            options={{
-              header: () => null,
-            }}
-            component={CreateGroupPage}
-          />
-          <RootStack.Screen
-            name="Login"
-            options={{
-              header: () => null,
-            }}
-            component={LoginPage}
-          />
-          <RootStack.Screen
-            name="GroupDetails"
-            options={{
-              header: () => null,
-            }}
-            component={GroupDetailsPage}
-          />
-          <RootStack.Screen name="Main" component={TabNavigator} />
-        </RootStack.Navigator>
-      </NavigationContainer>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
