@@ -9,9 +9,10 @@ import { createContext, useContext, useEffect, useState } from "react";
 import firebaseApp from "../../lib/firebase";
 
 export interface AuthContextProps {
-  user: User;
+  user?: User;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -61,8 +62,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(credential.user);
   };
 
+  const signOut = async () => {
+    await firebaseAuth.signOut();
+    setUser(undefined);
+  };
+
   return (
-    <AuthContext.Provider value={{ signIn, signUp, user }}>
+    <AuthContext.Provider value={{ signIn, signUp, signOut, user }}>
       {children}
     </AuthContext.Provider>
   );
