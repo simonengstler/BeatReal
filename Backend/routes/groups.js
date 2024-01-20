@@ -215,7 +215,50 @@ router.post("/groups/:groupId/shared-songs/:sharedSongId/reactions", async (req,
   }
 });
 
+// Endpoint to get the top 5 songs from all groups
+router.get("/groups/top-songs", async (req, res) => {
+  try {
+    const groupsSnapshot = await db.ref("groups").once("value");
+    const topSongs = [];
 
-// TODO: explore endpoint: return 5 songs with the most reactions and most recent from all groups
+    groupsSnapshot.forEach((groupSnapshot) => {
+      const group = groupSnapshot.val();
+
+      // Exclude groups with deleted: true
+      if (!group.deleted && group.sharedSongs) {
+        group.sharedSongs.forEach((sharedSong) => {
+          // Check if the shared song has reactions
+          if (sharedSong.reactions && sharedSong.reactions.length > 0) {
+            // Add the shared song to the topSongs array with additional information
+            topSongs.push({
+              groupId: groupSnapshot.key,
+              songId: sharedSong.songId,
+              songLink: sharedSong.songLink,
+              timestamp: sharedSong.timestamp,
+              userId: sharedSong.userId,
+              reactionCount: sharedSong.reactions.length,
+            });
+          }
+        });
+      }
+    });
+
+    // Sort topSongs by the number of reactions (desc) and timestamp (desc)
+    topSongs.sort((a, b) => {
+      if (b.reactionCount !== a.reactionCount) {
+        return b.reactionCount - a.reactionCount;
+      }
+      return b.timestamp - a.timestamp;
+    });
+
+    // Get the top 5 songs
+    const top5Songs = topSongs.slice(0, 5);
+
+    res.json({ topSongs: top5Songs });
+  } catch (error) {
+    console.error("Error fetching top songs from Realtime Database", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 module.exports = router;
