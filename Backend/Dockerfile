@@ -16,6 +16,6 @@ RUN apt-get update && apt-get install -y bash gnupg tar
 RUN chmod +x ./decrypt.sh
 
 # Fix the decrypt.sh script
-RUN ./decrypt.sh $PASSWORD
+RUN npm run decrypt $PASSWORD
 
 CMD ["node", "app.js"]
