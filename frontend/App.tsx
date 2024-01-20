@@ -1,14 +1,23 @@
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import CreateGroupPage from "./components/pages/CreateGroup";
 import ExplorePage from "./components/pages/Explore";
 import HomePage from "./components/pages/Home";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LandingPage from "./components/pages/Landing";
+import LoginPage from "./components/pages/Login";
 
+export type RootStackParamList = {
+  Landing: undefined;
+  Main: undefined;
+  CreateGroup: undefined;
+  Login: undefined;
+};
+
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
 
 function TabNavigator() {
   return (
@@ -38,10 +47,30 @@ function TabNavigator() {
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing">
-        <Stack.Screen name="Landing" component={LandingPage} />
-        <Stack.Screen name="Main" component={TabNavigator} />
-      </Stack.Navigator>
+      <RootStack.Navigator initialRouteName="Landing">
+        <RootStack.Screen
+          name="Landing"
+          options={{
+            header: () => null,
+          }}
+          component={LandingPage}
+        />
+        <RootStack.Screen
+          name="CreateGroup"
+          options={{
+            header: () => null,
+          }}
+          component={CreateGroupPage}
+        />
+        <RootStack.Screen
+          name="Login"
+          options={{
+            header: () => null,
+          }}
+          component={LoginPage}
+        />
+        <RootStack.Screen name="Main" component={TabNavigator} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }
