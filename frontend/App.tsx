@@ -8,6 +8,7 @@ import ExplorePage from "./components/pages/Explore";
 import HomePage from "./components/pages/Home";
 import LandingPage from "./components/pages/Landing";
 import LoginPage from "./components/pages/Login";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 export type RootStackParamList = {
   Landing: undefined;
