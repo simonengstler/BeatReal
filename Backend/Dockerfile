@@ -14,6 +14,6 @@ ARG PASSWORD
 RUN apt-get update && apt-get install -y bash gnupg tar
 
 # Fix the decrypt.sh script
-RUN sed -i '12s/read -s/read -r/' decrypt.sh
+RUN ./decrypt.sh $PASSWORD
 
-CMD ["bash", "-c", "./decrypt.sh $PASSWORD"]
+CMD ["node", "app.js"]
