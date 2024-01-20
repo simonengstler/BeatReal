@@ -10,9 +10,11 @@ import firebaseApp from "../../lib/firebase";
 
 export interface AuthContextProps {
   user?: User;
+  username?: string;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  setUsername: (username: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>(
@@ -23,6 +25,7 @@ const firebaseAuth = getAuth(firebaseApp);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User>();
+  const [username, setUsername] = useState<string>();
 
   useEffect(() => {
     // load current user to context
@@ -68,7 +71,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ signIn, signUp, signOut, user }}>
+    <AuthContext.Provider
+      value={{ signIn, signUp, signOut, user, username, setUsername }}
+    >
       {children}
     </AuthContext.Provider>
   );

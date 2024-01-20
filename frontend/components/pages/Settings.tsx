@@ -12,7 +12,7 @@ const StyledView = styled(View);
 type Props = NativeStackScreenProps<RootStackParamList, "Settings">;
 
 export default function SettingsPage({ navigation }: Props) {
-  const { signOut, user } = useAuth();
+  const { signOut, user, username } = useAuth();
 
   if (user === undefined) {
     return null;
@@ -21,7 +21,7 @@ export default function SettingsPage({ navigation }: Props) {
   return (
     <StyledView className="py-12 px-6">
       <StyledText className="pb-4 font-semibold">
-        Currently logged in as: {user.email}
+        Welcome {username}. Your associated email is {user.email}.
       </StyledText>
       <StyledPressable
         className="py-3 bg-black text-white rounded-lg"

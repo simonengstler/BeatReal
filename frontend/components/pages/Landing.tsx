@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Pressable, Text, View } from "react-native";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { useAuth } from "../context/AuthContext";
+import { useIsFocused } from "@react-navigation/native";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -13,15 +14,17 @@ type Props = NativeStackScreenProps<RootStackParamList, "Landing">;
 
 export default function LandingPage({ navigation }: Props) {
   const { user } = useAuth();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (user !== undefined) {
+    if (isFocused && user !== undefined) {
+      console.info("user is logged in, redirecting to main page...");
       navigation.reset({
         index: 0,
         routes: [{ name: "Main" }],
       });
     }
-  }, [user]);
+  }, [isFocused, user]);
 
   return (
     <StyledView className="flex flex-col justify-center px-6 bg-black h-full">

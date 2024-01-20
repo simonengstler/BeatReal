@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "nativewind";
 import React, { useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
-import { RootStackParamList } from "../routes/BottomNavigator";
+import { RootStackParamList } from "../routes/RootNavigator";
 import { useAuth } from "../context/AuthContext";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Login">;

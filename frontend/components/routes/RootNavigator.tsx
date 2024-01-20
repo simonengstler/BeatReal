@@ -62,7 +62,13 @@ export function RootNavigator() {
           }}
           component={GroupDetailsPage}
         />
-        <RootStack.Screen name="Main" component={BottomNavigator} />
+        <RootStack.Screen
+          name="Main"
+          options={{
+            headerShown: false
+          }}
+          component={BottomNavigator}
+        />
       </RootStack.Navigator>
     </NavigationContainer>
   );
