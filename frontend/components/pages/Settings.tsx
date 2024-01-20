@@ -14,6 +14,10 @@ type Props = NativeStackScreenProps<RootStackParamList, "Settings">;
 export default function SettingsPage({ navigation }: Props) {
   const { signOut, user } = useAuth();
 
+  if (user === undefined) {
+    return null;
+  }
+
   return (
     <StyledView className="py-12 px-6">
       <StyledText className="pb-4 font-semibold">
