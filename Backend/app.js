@@ -4,7 +4,10 @@ const usersRouter = require('./routes/users');
 const groupsRouter = require('./routes/groups');
 
 const app = express();
+var cors = require('cors')
 const PORT = 3000;
+
+app.use(cors())
 
 app.use(bodyParser.json());
 
