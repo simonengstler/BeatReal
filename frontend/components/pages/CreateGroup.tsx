@@ -49,14 +49,14 @@ type Props = NativeStackScreenProps<RootStackParamList, "CreateGroup">;
 export default function CreateGroupPage({ navigation }: Props) {
   const [groupName, setGroupName] = useState("");
   const [description, setDescription] = useState("");
-  const { username, user } = useAuth();
+  const { username } = useAuth();
   const queryClient = useQueryClient();
 
   const { mutateAsync } = useMutation({
     mutationFn: () => createGroupRequest(groupName, username, description),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["groups", user?.uid],
+        queryKey: ["groups", username],
       });
       navigation.reset({
         index: 0,

@@ -22,8 +22,10 @@ const StyledScrollView = styled(ScrollView);
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
 
-async function fetchMyGroups(userId: string) {
-  const response = await fetch(`${BACKEND_URL}/api/groups?userId=${userId}`);
+async function fetchMyGroups(username: string) {
+  const response = await fetch(
+    `${BACKEND_URL}/api/groups?username=${username}`
+  );
   const data = await response.json();
   return Object.values(data);
 }
@@ -31,11 +33,11 @@ async function fetchMyGroups(userId: string) {
 export default function MyGroupsPage({ navigation }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { user } = useAuth();
+  const { username } = useAuth();
   const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["groups", user?.uid],
-    queryFn: () => fetchMyGroups(user.uid),
-    enabled: user !== undefined,
+    queryKey: ["groups", username],
+    queryFn: () => fetchMyGroups(username),
+    enabled: username !== undefined,
   });
   const onRefresh = useCallback(() => {
     setRefreshing(true);
