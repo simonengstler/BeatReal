@@ -10,8 +10,6 @@ router.get("/groups", (req, res) => {
     db.ref("groups").once("value", (snapshot) => {
       const groups = snapshot.val();
 
-      console.log(groups);
-
       // Filter out groups with "deleted": true and where userId matches
       const filteredGroups = Object.entries(groups || {})
         .filter(
@@ -34,8 +32,6 @@ router.get("/groups", (req, res) => {
 router.post("/groups", (req, res) => {
   try {
     const { name, userId } = req.body;
-
-    console.log(req.body)
 
     // Check if required parameters are provided
     if (!name || !userId) {
@@ -187,7 +183,7 @@ router.post("/groups/:groupId/shared-songs/:sharedSongId/reactions", async (req,
     }
 
     // Find the index of the shared song with the specified ID
-    const sharedSongIndex = existingGroup.sharedSongs.findIndex(song => song.songId === sharedSongId);
+    const sharedSongIndex = existingGroup.sharedSongs.findIndex(song => song.sharedSongId === sharedSongId);
 
     // Check if the shared song with the specified ID exists
     if (sharedSongIndex === -1) {
