@@ -11,11 +11,6 @@ export default function CreateGroupBtn() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'flex-end'
-  },
   button: {
     padding: 6,
     borderRadius: 4,
