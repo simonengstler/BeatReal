@@ -66,7 +66,9 @@ router.get("/users/:userId", async (req, res) => {
       .orderByChild("userId")
       .equalTo(userId)
       .once("value");
-    const user = userSnapshot.val();
+
+    // assuming a user has only one entry in the database
+    const user = Object.values(userSnapshot.val())[0];
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
