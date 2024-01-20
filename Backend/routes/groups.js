@@ -38,7 +38,7 @@ router.post("/groups", (req, res) => {
       return res.status(400).json({ message: "name and userId are required" });
     }
 
-    const newGroupRef = db.ref("groups").push({ name, members: [userId] });
+    const newGroupRef = db.ref("groups").push({ name, members: [userId], sharedSongs: [] });
     const newGroupId = newGroupRef.key;
     res.status(201).json({ id: newGroupId, name, members: [userId] });
   } catch (error) {
