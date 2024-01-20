@@ -34,6 +34,14 @@ router.get("/groups", (req, res) => {
 router.post("/groups", (req, res) => {
   try {
     const { name, userId } = req.body;
+
+    console.log(req.body)
+
+    // Check if required parameters are provided
+    if (!name || !userId) {
+      return res.status(400).json({ message: "name and userId are required" });
+    }
+
     const newGroupRef = db.ref("groups").push({ name, members: [userId] });
     const newGroupId = newGroupRef.key;
     res.status(201).json({ id: newGroupId, name, members: [userId] });
