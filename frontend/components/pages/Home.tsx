@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react"
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import GroupCard from "../GroupPage/GroupCard";
 import Btn from "../Btn";
 import Message from "../GroupPage/Message";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import { useAuth } from "../context/AuthContext";
 
 enum Status {
@@ -32,26 +30,18 @@ export default function HomePage({ navigation }) {
   const { user } = useAuth()
 
   async function fetchData() {
-    const options = {
-      method: 'GET',
-      body: JSON.stringify({
-        userId: "Simon"
-        // userId: user
-      })
-    }
     try {
-      const response = await fetch(API_ENDPOINT, options)
+      // const response = await fetch(`${API_ENDPOINT}?userId=${user.uid}`)
+      const response = await fetch(`${API_ENDPOINT}?userId=Simon`)
       const data = await response.json()
       console.log(data)
       if (data !== undefined) {
-        setData(data)
+        setData(Object.values(data))
         setStatus(Status.SUCCESS)
       } else {
         setStatus(Status.EMPTY_RESULTS)
       }
     } catch (e) {
-      // setStatus(Status.SUCCESS)
-      // setData(mockData)
       setStatus(Status.ERROR)
     }
   }
@@ -71,9 +61,9 @@ export default function HomePage({ navigation }) {
       </ScrollView>
 
       <View>
-        <Btn 
-          label={'Create New Group'} 
-          handleChange={() => navigation.navigate('CreateGroup')} 
+        <Btn
+          label={'Create New Group'}
+          handleChange={() => navigation.navigate('CreateGroup')}
           isDisabled={false}
         />
       </View>
