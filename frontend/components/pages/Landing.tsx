@@ -1,5 +1,9 @@
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function LandingPage() {
-  return <View>Landing page</View>;
+  return (
+    <View>
+      <Text>Landing page</Text>
+    </View>
+  );
 }
