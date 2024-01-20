@@ -5,9 +5,22 @@ const db = require("../db");
 // Display Groups
 router.get("/groups", (req, res) => {
   try {
+    const { userId } = req.body;
+
     db.ref("groups").once("value", (snapshot) => {
       const groups = snapshot.val();
-      res.json(groups);
+
+      console.log(groups)
+
+      // Filter out groups with "deleted": true and where userId matches
+      const filteredGroups = Object.entries(groups || {})
+      .filter(([groupId, group]) => !group.deleted && group.members.includes(userId))
+      .reduce((acc, [groupId, group]) => {
+        acc[groupId] = group;
+        return acc;
+      }, {});
+
+      res.json(filteredGroups);
     });
   } catch (error) {
     console.error("Error fetching groups from Realtime Database", error);
@@ -18,11 +31,10 @@ router.get("/groups", (req, res) => {
 // Create Group
 router.post("/groups", (req, res) => {
   try {
-    const { name } = req.body;
-    console.log(req)
-    const newGroupRef = db.ref("groups").push({ name });
+    const { name, userId } = req.body;
+    const newGroupRef = db.ref("groups").push({ name, members: [userId] });
     const newGroupId = newGroupRef.key;
-    res.status(201).json({ id: newGroupId, name });
+    res.status(201).json({ id: newGroupId, name, members: [userId] });
   } catch (error) {
     console.error("Error creating group in Realtime Database", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -53,6 +65,32 @@ router.delete("/groups/:groupId", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// Irretrievably delete Group
+router.delete("/groups/:groupId", async (req, res) => {
+  const groupId = req.params.groupId;
+
+  try {
+    // Fetch the existing group
+    const groupRef = db.ref(`groups/${groupId}`);
+    const existingGroupSnapshot = await groupRef.once("value");
+    const existingGroup = existingGroupSnapshot.val();
+
+    // Check if the group exists
+    if (!existingGroup) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Update the group to mark it as deleted
+    await groupRef.remove()
+
+    res.status(204).json({ message: "Group marked as deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting group from Realtime Database", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 // Invite to Group
 router.post("/groups/:groupId/invite", async (req, res) => {
