@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { ScrollView, StyleSheet, View, Text } from "react-native";
 import GroupCard from "../GroupPage/GroupCard";
-import CreateGroupBtn from "../GroupPage/CreateGroupBtn";
+import Btn from "../Btn";
 import Message from "../GroupPage/Message";
 
 enum Status {
@@ -22,7 +22,7 @@ const mockData = [
 
 const API_ENDPOINT = ""
 
-export default function HomePage() {
+export default function HomePage({ navigation }) {
 
   const [status, setStatus] = useState<Status>(Status.LOADING)
   const [data, setData] = useState([])
@@ -30,7 +30,7 @@ export default function HomePage() {
   async function fetchData() {
     try {
       const response = await fetch(API_ENDPOINT)
-      const data = response.json()
+      const data = await response.json()
       if (data.length > 0) {
         setData(data)
         setStatus(Status.SUCCESS)
@@ -50,16 +50,20 @@ export default function HomePage() {
 
   return (
     <View style={styles.container}>
-      
+
       <ScrollView>
-        { status === Status.LOADING && <Message label="Loading..." /> }
-        { status === Status.ERROR && <Message label="Oops! Something went wrong in the server. Please try again later." />  }
-        { status === Status.EMPTY_RESULTS && <Message label="So empty... Start a new group below!" />  }
-        { status === Status.SUCCESS && data.map(group => <GroupCard group={group} />)}
+        {status === Status.LOADING && <Message label="Loading..." />}
+        {status === Status.ERROR && <Message label="Oops! Something went wrong in the server. Please try again later." />}
+        {status === Status.EMPTY_RESULTS && <Message label="So empty... Start a new group below!" />}
+        {status === Status.SUCCESS && data.map(group => <GroupCard group={group} />)}
       </ScrollView>
 
       <View>
-        <CreateGroupBtn />
+        <Btn 
+          label={'Create New Group'} 
+          handleChange={() => navigation.navigate('CreateGroup')} 
+          isDisabled={false}
+        />
       </View>
 
     </View>

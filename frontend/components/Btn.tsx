@@ -1,12 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-export default function CreateGroupBtn() {
+export default function Btn({ label, handleChange, isDisabled }) {
   return <TouchableOpacity
     style={styles.button}
     activeOpacity={0.7}
-    onPress={() => alert('Button pressed!')}
+    onPress={handleChange}
+    disabled={isDisabled}
   >
-    <Text style={styles.text}>Create New Group</Text>
+    <Text style={styles.text}>{ label }</Text>
   </TouchableOpacity>
 }
 
