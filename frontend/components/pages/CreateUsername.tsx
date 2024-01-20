@@ -15,7 +15,7 @@ export default function CreateUsernamePage({ navigation }: Props) {
   const [username, setUsername] = useState("");
 
   return (
-    <StyledView className="bg-black h-full py-48 px-6">
+    <StyledView className="bg-black h-full py-48 px-6 justify-center">
       <StyledText className="text-white text-3xl font-bold tracking-tighter">
         Choose your unique username.
       </StyledText>
