@@ -3,6 +3,9 @@ import { ScrollView, StyleSheet, View, Text } from "react-native";
 import GroupCard from "../GroupPage/GroupCard";
 import Btn from "../Btn";
 import Message from "../GroupPage/Message";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 enum Status {
   LOADING = "loading",
@@ -20,17 +23,26 @@ const mockData = [
   { id: 6, name: 'Group 6' },
 ]
 
-const API_ENDPOINT = ""
+const API_ENDPOINT = "http://localhost:3000/api/groups"
 
 export default function HomePage({ navigation }) {
 
   const [status, setStatus] = useState<Status>(Status.LOADING)
   const [data, setData] = useState([])
+  const { user } = useAuth()
 
   async function fetchData() {
+    const options = {
+      method: 'GET',
+      body: JSON.stringify({
+        userId: "Simon"
+        // userId: user
+      })
+    }
     try {
-      const response = await fetch(API_ENDPOINT)
+      const response = await fetch(API_ENDPOINT, options)
       const data = await response.json()
+      console.log(data)
       if (data.length > 0) {
         setData(data)
         setStatus(Status.SUCCESS)
@@ -38,9 +50,9 @@ export default function HomePage({ navigation }) {
         setStatus(Status.EMPTY_RESULTS)
       }
     } catch (e) {
-      setStatus(Status.SUCCESS)
-      setData(mockData)
-      // setStatus(Status.ERROR)
+      // setStatus(Status.SUCCESS)
+      // setData(mockData)
+      setStatus(Status.ERROR)
     }
   }
 
