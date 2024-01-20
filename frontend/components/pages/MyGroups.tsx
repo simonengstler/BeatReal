@@ -34,8 +34,6 @@ export default function MyGroupsPage({ navigation }: Props) {
     refetch().finally(() => setRefreshing(false));
   }, []);
 
-  console.log({ data });
-
   return (
     <StyledScrollView
       className="py-8 px-6 h-full"

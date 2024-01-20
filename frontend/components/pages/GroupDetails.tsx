@@ -6,6 +6,7 @@ import SongCard from "../Group/SongCard";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { SvgUri } from "react-native-svg";
 import { useGetGroups } from "../../hooks/useGetGroups";
+import { InviteFriendsButton } from "../Group/InviteFriendsButton";
 
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
@@ -48,16 +49,13 @@ export default function GroupDetailsPage({ route, navigation }: Props) {
             No songs found. Be the first to share!
           </StyledText>
         ) : (
-          sharedSongs.map((song) => <SongCard song={song} />)
+          sharedSongs.map((song) => (
+            <SongCard song={song} key={song.sharedSongId} />
+          ))
         )}
       </ScrollView>
       <StyledView className="flex-row">
-        <StyledPressable
-          className="mx-auto border-2 bg-white rounded-lg px-4 py-2"
-          onPress={() => {}}
-        >
-          <StyledText className="font-bold text-lg">Invite User</StyledText>
-        </StyledPressable>
+        <InviteFriendsButton groupId={groupId} />
         <StyledPressable
           className="mx-auto border-2 bg-white rounded-lg px-4 py-2"
           onPress={() => {

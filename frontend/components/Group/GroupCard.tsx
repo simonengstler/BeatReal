@@ -24,10 +24,7 @@ export default function GroupCard({ group, navigation }: Props) {
       className="mx-auto p-4 mb-4 bg-transparent border-2 border-white w-full rounded-lg"
       onPress={() =>
         navigation.navigate("GroupDetails", {
-          sharedSongs: group.sharedSongs,
-          name: group.name,
           groupId: group.id,
-          members: group.members,
         })
       }
     >

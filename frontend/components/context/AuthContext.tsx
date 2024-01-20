@@ -31,7 +31,6 @@ const firebaseAuth = getAuth(firebaseApp);
 async function getUsername(userId: string) {
   const response = await fetch(`${BACKEND_URL}/api/users/${userId}`);
   const data = await response.json();
-  console.log(data);
   if (!data.username) {
     throw new Error("Username not found");
   }
