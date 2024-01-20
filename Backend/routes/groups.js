@@ -10,15 +10,17 @@ router.get("/groups", (req, res) => {
     db.ref("groups").once("value", (snapshot) => {
       const groups = snapshot.val();
 
-      console.log(groups)
+      console.log(groups);
 
       // Filter out groups with "deleted": true and where userId matches
       const filteredGroups = Object.entries(groups || {})
-      .filter(([groupId, group]) => !group.deleted && group.members.includes(userId))
-      .reduce((acc, [groupId, group]) => {
-        acc[groupId] = group;
-        return acc;
-      }, {});
+        .filter(
+          ([groupId, group]) => !group.deleted && group.members.includes(userId)
+        )
+        .reduce((acc, [groupId, group]) => {
+          acc[groupId] = group;
+          return acc;
+        }, {});
 
       res.json(filteredGroups);
     });
@@ -82,7 +84,7 @@ router.delete("/groups/:groupId", async (req, res) => {
     }
 
     // Update the group to mark it as deleted
-    await groupRef.remove()
+    await groupRef.remove();
 
     res.status(204).json({ message: "Group marked as deleted successfully" });
   } catch (error) {
@@ -90,7 +92,6 @@ router.delete("/groups/:groupId", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 
 // Invite to Group
 router.post("/groups/:groupId/invite", async (req, res) => {
@@ -109,8 +110,13 @@ router.post("/groups/:groupId/invite", async (req, res) => {
     }
 
     // Check if the invited user is already a member
-    if (existingGroup.members && existingGroup.members.includes(invitedUserId)) {
-      return res.status(400).json({ message: "User is already a member of the group" });
+    if (
+      existingGroup.members &&
+      existingGroup.members.includes(invitedUserId)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "User is already a member of the group" });
     }
 
     // Update the group to add the invited user
@@ -122,7 +128,10 @@ router.post("/groups/:groupId/invite", async (req, res) => {
     // Save the updated group
     await groupRef.update(existingGroup);
 
-    res.json({ message: "User invited to the group successfully", updatedGroup: existingGroup });
+    res.json({
+      message: "User invited to the group successfully",
+      updatedGroup: existingGroup,
+    });
   } catch (error) {
     console.error("Error inviting user to group in Realtime Database", error);
     res.status(500).json({ message: "Internal Server Error" });
