@@ -5,15 +5,15 @@ const db = require("../db");
 // Display Groups
 router.get("/groups", (req, res) => {
   try {
-    const { userId } = req.query
+    const { username } = req.query
 
     db.ref("groups").once("value", (snapshot) => {
       const groups = snapshot.val();
 
-      // Filter out groups with "deleted": true and where userId matches
+      // Filter out groups with "deleted": true and where username matches
       const filteredGroups = Object.entries(groups || {})
         .filter(
-          ([groupId, group]) => !group.deleted && group.members.includes(userId)
+          ([groupId, group]) => !group.deleted && group.members.includes(username)
         )
         .reduce((acc, [groupId, group]) => {
           acc[groupId] = group;
@@ -31,16 +31,16 @@ router.get("/groups", (req, res) => {
 // Create Group
 router.post("/groups", (req, res) => {
   try {
-    const { name, userId } = req.body;
+    const { name, username } = req.body;
 
     // Check if required parameters are provided
-    if (!name || !userId) {
-      return res.status(400).json({ message: "name and userId are required" });
+    if (!name || !username) {
+      return res.status(400).json({ message: "name and username are required" });
     }
 
-    const newGroupRef = db.ref("groups").push({ name, members: [userId], sharedSongs: [] });
+    const newGroupRef = db.ref("groups").push({ name, members: [username], sharedSongs: [] });
     const newGroupId = newGroupRef.key;
-    res.status(201).json({ id: newGroupId, name, members: [userId] });
+    res.status(201).json({ id: newGroupId, name, members: [username] });
   } catch (error) {
     console.error("Error creating group in Realtime Database", error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -75,7 +75,7 @@ router.delete("/groups/:groupId", async (req, res) => {
 // Invite to Group
 router.post("/groups/:groupId/invite", async (req, res) => {
   const groupId = req.params.groupId;
-  const invitedUserId = req.body.userId;
+  const invitedUsername = req.body.username;
 
   try {
     // Fetch the existing group
@@ -91,7 +91,7 @@ router.post("/groups/:groupId/invite", async (req, res) => {
     // Check if the invited user is already a member
     if (
       existingGroup.members &&
-      existingGroup.members.includes(invitedUserId)
+      existingGroup.members.includes(invitedUsername)
     ) {
       return res
         .status(400)
@@ -102,7 +102,7 @@ router.post("/groups/:groupId/invite", async (req, res) => {
     if (!existingGroup.members) {
       existingGroup.members = [];
     }
-    existingGroup.members.push(invitedUserId);
+    existingGroup.members.push(invitedUsername);
 
     // Save the updated group
     await groupRef.update(existingGroup);
@@ -120,11 +120,11 @@ router.post("/groups/:groupId/invite", async (req, res) => {
 // Share Song in Group
 router.post("/groups/share-song", async (req, res) => {
   try {
-    const { userId, groupId, songLink } = req.body;
+    const { username, groupId, songLink } = req.body;
 
     // Check if required parameters are provided
-    if (!userId || !groupId || !songLink) {
-      return res.status(400).json({ message: "userId, groupId, and songLink are required" });
+    if (!username || !groupId || !songLink) {
+      return res.status(400).json({ message: "username, groupId, and songLink are required" });
     }
 
     // Fetch the existing group
@@ -148,7 +148,7 @@ router.post("/groups/share-song", async (req, res) => {
     existingGroup.sharedSongs.push({
       sharedSongId,
       timestamp: Date.now(),
-      userId,
+      username,
       songLink,
     });
 
@@ -169,7 +169,7 @@ router.post("/groups/share-song", async (req, res) => {
 router.post("/groups/:groupId/shared-songs/:sharedSongId/reactions", async (req, res) => {
   const groupId = req.params.groupId;
   const sharedSongId = req.params.sharedSongId;
-  const { reaction, userId } = req.body;
+  const { reaction, username } = req.body;
 
   try {
     // Fetch the existing group
@@ -191,7 +191,7 @@ router.post("/groups/:groupId/shared-songs/:sharedSongId/reactions", async (req,
     }
 
     // Create the reaction object with an automatic timestamp
-    const newReaction = { reaction, timestamp: Date.now(), userId };
+    const newReaction = { reaction, timestamp: Date.now(), username };
 
     // Check if the reactions array exists, if not create it
     if (!existingGroup.sharedSongs[sharedSongIndex].reactions) {
@@ -235,7 +235,7 @@ router.get("/groups/top-songs", async (req, res) => {
               songId: sharedSong.songId,
               songLink: sharedSong.songLink,
               timestamp: sharedSong.timestamp,
-              userId: sharedSong.userId,
+              username: sharedSong.username,
               reactionCount: sharedSong.reactions.length,
             });
           }
