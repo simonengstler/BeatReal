@@ -48,14 +48,14 @@ function TabNavigator() {
 export default function App() {
   return (
     <NavigationContainer>
-      <RootStack.Navigator initialRouteName="Landing">
-        <RootStack.Screen
+      <RootStack.Navigator initialRouteName="Main">
+        {/* <RootStack.Screen
           name="Landing"
           options={{
             header: () => null,
           }}
           component={LandingPage}
-        />
+        /> */}
         <RootStack.Screen
           name="CreateGroup"
           options={{
@@ -63,13 +63,13 @@ export default function App() {
           }}
           component={CreateGroupPage}
         />
-        <RootStack.Screen
+        {/* <RootStack.Screen
           name="Login"
           options={{
             header: () => null,
           }}
           component={LoginPage}
-        />
+        /> */}
         <RootStack.Screen name="Main" component={TabNavigator} />
       </RootStack.Navigator>
     </NavigationContainer>
