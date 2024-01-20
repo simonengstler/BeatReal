@@ -49,7 +49,12 @@ export default function App() {
   return (
     <AuthProvider>
       <NavigationContainer>
-        <RootStack.Navigator initialRouteName="Landing">
+        <RootStack.Navigator
+          initialRouteName="Landing"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
           <RootStack.Screen
             name="Landing"
             options={{
