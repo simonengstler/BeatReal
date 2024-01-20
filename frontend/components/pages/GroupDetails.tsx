@@ -2,6 +2,9 @@ import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 import SongCard from "../Group/SongCard";
 import React from "react";
 import { styled } from "nativewind";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { RootStackParamList } from "../routes/RootNavigator";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const mockData = [
   { link: "spotify.com", username: "sebastian" },
@@ -13,8 +16,10 @@ const mockData = [
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
 
-export default function GroupDetailsPage({ route }) {
-  const { songs } = route.params;
+type Props = NativeStackScreenProps<RootStackParamList, "GroupDetails">;
+
+export default function GroupDetailsPage({ route }: Props) {
+  const { sharedSongs } = route.params;
 
   return (
     <View style={styles.container}>

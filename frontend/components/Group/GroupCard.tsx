@@ -1,28 +1,45 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { styled } from "nativewind";
+import { Text, StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import { Group } from "../../types/database";
+import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { RootStackParamList } from "../routes/RootNavigator";
+import { SvgUri } from "react-native-svg";
 
-export default function GroupCard({ group, navigation }) {
-  return (
-    <TouchableOpacity
-      style={styles.row}
-      onPress={() => navigation.navigate("GroupDetails", { songs: group.songs })}
-    >
-      <Text style={styles.heading}>{group.name}</Text>
-    </TouchableOpacity>
-  );
+const StyledTouchableOpacity = styled(TouchableOpacity);
+const StyledText = styled(Text);
+const StyledView = styled(View);
+
+interface Props {
+  group: Group;
+  navigation: BottomTabNavigationProp<
+    RootStackParamList,
+    "My Groups",
+    undefined
+  >;
 }
 
-const styles = StyleSheet.create({
-  row: {
-    width: "90%",
-    marginRight: "auto",
-    marginLeft: "auto",
-    padding: 15,
-    marginBottom: 15,
-    backgroundColor: '#c5e3f6',
-    borderRadius: 6,
-  },
-  heading: {
-    fontSize: 16,
-    fontWeight: "500",
-  }
-})
+export default function GroupCard({ group, navigation }: Props) {
+  return (
+    <StyledTouchableOpacity
+      className="mx-auto p-4 mb-4 bg-transparent border-2 border-white w-full rounded-lg"
+      onPress={() =>
+        navigation.navigate("GroupDetails", { sharedSongs: group.sharedSongs })
+      }
+    >
+      <StyledText className="font-bold text-lg tracking-tight text-white mb-2">
+        {group.name}
+      </StyledText>
+      {group.members.map((member) => (
+        <StyledView className="flex-row items-center" key={member}>
+          <SvgUri
+            width={20}
+            height={20}
+            style={{ marginRight: 2 }}
+            uri={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${member}`}
+          />
+          <StyledText className="text-white">{member}</StyledText>
+        </StyledView>
+      ))}
+    </StyledTouchableOpacity>
+  );
+}

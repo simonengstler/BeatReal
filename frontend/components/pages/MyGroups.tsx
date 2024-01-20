@@ -14,6 +14,7 @@ import Message from "../Group/Message";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { useState, useCallback } from "react";
+import { Group } from "../../types/database";
 
 type Props = BottomTabScreenProps<RootStackParamList, "My Groups">;
 
@@ -27,7 +28,7 @@ async function fetchMyGroups(username: string) {
     `${BACKEND_URL}/api/groups?username=${username}`
   );
   const data = await response.json();
-  return Object.values(data);
+  return Object.values(data) as Group[];
 }
 
 export default function MyGroupsPage({ navigation }: Props) {

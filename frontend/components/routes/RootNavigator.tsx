@@ -1,5 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Song } from "../../types/database";
 import CreateGroupPage from "../pages/CreateGroup";
 import CreateUsernamePage from "../pages/CreateUsername";
 import GroupDetailsPage from "../pages/GroupDetails";
@@ -13,7 +14,7 @@ export type RootStackParamList = {
   CreateGroup: undefined;
   Login: undefined;
   CreateUsername: undefined;
-  GroupDetails: undefined;
+  GroupDetails: { sharedSongs?: Song[] };
 } & BottomNavigatorParamList;
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
