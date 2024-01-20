@@ -35,13 +35,6 @@ export function RootNavigator() {
           component={LandingPage}
         />
         <RootStack.Screen
-          name="CreateGroup"
-          options={{
-            header: () => null,
-          }}
-          component={CreateGroupPage}
-        />
-        <RootStack.Screen
           name="Login"
           options={{
             header: () => null,
@@ -65,9 +58,22 @@ export function RootNavigator() {
         <RootStack.Screen
           name="Main"
           options={{
-            headerShown: false
+            headerShown: false,
           }}
           component={BottomNavigator}
+        />
+        <RootStack.Screen
+          name="CreateGroup"
+          options={{
+            headerTitle: "",
+            headerTitleStyle: {
+              color: "#fff",
+            },
+            headerStyle: {
+              backgroundColor: "#000000ee",
+            },
+          }}
+          component={CreateGroupPage}
         />
       </RootStack.Navigator>
     </NavigationContainer>

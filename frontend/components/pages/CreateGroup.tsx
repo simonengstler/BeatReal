@@ -1,9 +1,19 @@
 import { BACKEND_URL } from "@env";
-import { useMutation } from "@tanstack/react-query";
-import React, { useState } from "react";
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import { useAuth } from "../context/AuthContext";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { styled } from "nativewind";
+import React, { useState } from "react";
+import {
+  Keyboard,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { useAuth } from "../context/AuthContext";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../routes/RootNavigator";
 
 async function createGroupRequest(
   name: string,
@@ -30,20 +40,28 @@ async function createGroupRequest(
 
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
+const StyledView = styled(View);
+const StyledTextInput = styled(TextInput);
+const StyledTouchableWithoutFeedback = styled(TouchableWithoutFeedback);
 
-export default function CreateGroupPage({ navigation }) {
+type Props = NativeStackScreenProps<RootStackParamList, "CreateGroup">;
+
+export default function CreateGroupPage({ navigation }: Props) {
   const [groupName, setGroupName] = useState("");
   const [description, setDescription] = useState("");
-  const { username } = useAuth();
+  const { username, user } = useAuth();
+  const queryClient = useQueryClient();
 
   const { mutateAsync } = useMutation({
     mutationFn: () => createGroupRequest(groupName, username, description),
-    onSuccess: (a) => {
-      // navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: "Main" }],
-      // });
-      console.log(a);
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["groups", user?.uid],
+      });
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
     },
     onError: (e) => {
       console.error(e.message);
@@ -51,32 +69,45 @@ export default function CreateGroupPage({ navigation }) {
   });
 
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 20 }}>Create Group</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setGroupName}
-        value={groupName}
-      />
-      <StyledPressable
-        className="mx-auto border-2 bg-white rounded px-4 py-2"
-        onPress={async () => {
-          await mutateAsync();
-        }}
-        disabled={groupName === ""}
-      >
-        <StyledText className="font-bold text-lg">Start new group</StyledText>
-      </StyledPressable>
-    </View>
+    <StyledTouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <StyledView className="bg-black h-full flex text-center px-6 justify-center pb-24">
+        <StyledText className="text-white font-bold tracking-tighter text-3xl text-center pb-4">
+          Create Group
+        </StyledText>
+        <StyledTextInput
+          className="border-slate-400 rounded-lg border-2 px-5 py-3 mb-3 text-lg leading-[0px] text-white"
+          placeholderTextColor={"rgb(148 163 184)"}
+          onChangeText={setGroupName}
+          value={groupName}
+          placeholder="Group Name"
+          autoCapitalize="none"
+        />
+        <StyledTextInput
+          className="border-slate-400 rounded-lg border-2 px-5 py-3 mb-3 text-lg leading-[0px] text-white"
+          placeholderTextColor={"rgb(148 163 184)"}
+          onChangeText={setDescription}
+          value={description}
+          placeholder="Description"
+          autoCapitalize="none"
+          multiline
+        />
+        <StyledPressable
+          className="mt-2 mx-auto border-2 bg-white rounded-lg px-4 py-2"
+          onPress={async () => {
+            await mutateAsync();
+          }}
+          disabled={groupName === ""}
+        >
+          <StyledText className="font-bold text-lg">
+            Create new group
+          </StyledText>
+        </StyledPressable>
+      </StyledView>
+    </StyledTouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   input: {
     height: 50,
     margin: 12,

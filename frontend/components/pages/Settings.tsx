@@ -1,6 +1,12 @@
 import { styled } from "nativewind";
-import React from "react";
-import { Pressable, Text, View } from "react-native";
+import React, { useCallback, useState } from "react";
+import {
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { useAuth } from "../context/AuthContext";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../routes/RootNavigator";
@@ -8,19 +14,32 @@ import { RootStackParamList } from "../routes/RootNavigator";
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
 const StyledView = styled(View);
+const StyledScrollView = styled(ScrollView);
 
 type Props = NativeStackScreenProps<RootStackParamList, "Settings">;
 
 export default function SettingsPage({ navigation }: Props) {
-  const { signOut, user, username } = useAuth();
+  const { signOut, user, username, refetchUsername } = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    refetchUsername().finally(() => setRefreshing(false));
+  }, []);
 
   if (user === undefined) {
     return null;
   }
 
   return (
-    <StyledView className="py-12 px-6">
-      <StyledText className="pb-4 font-semibold">
+    <StyledScrollView
+      className="py-12 px-6"
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <StyledText className="pb-4 font-semibold text-white">
         Welcome {username}. Your associated email is {user.email}.
       </StyledText>
       <StyledPressable
@@ -34,6 +53,6 @@ export default function SettingsPage({ navigation }: Props) {
           Sign Out
         </StyledText>
       </StyledPressable>
-    </StyledView>
+    </StyledScrollView>
   );
 }

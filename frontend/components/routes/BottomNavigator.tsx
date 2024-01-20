@@ -32,6 +32,9 @@ export function BottomNavigator() {
           color: "#fff",
         },
       }}
+      sceneContainerStyle={{
+        backgroundColor: "#000000",
+      }}
     >
       <Tab.Screen
         name="My Groups"

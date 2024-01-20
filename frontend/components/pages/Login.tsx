@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { styled } from "nativewind";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { useAuth } from "../context/AuthContext";
@@ -16,7 +16,19 @@ export default function LoginPage({ navigation }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { signUp, signIn } = useAuth();
+  const { signUp, signIn, isUsernameLoading, user, username } = useAuth();
+
+  useEffect(() => {
+    if (user !== undefined && username === undefined && !isUsernameLoading) {
+      navigation.navigate("CreateUsername");
+    } else if (
+      user !== undefined &&
+      username !== undefined &&
+      !isUsernameLoading
+    ) {
+      navigation.navigate("Main");
+    }
+  }, [user, isUsernameLoading]);
 
   return (
     <StyledView className="bg-black h-full py-48 px-6 justify-center">
@@ -47,16 +59,15 @@ export default function LoginPage({ navigation }: Props) {
         />
         <StyledPressable
           className="mt-8 rounded-lg px-4 py-2 bg-white"
-          onPress={() => {
+          onPress={async () => {
             try {
-              signIn(email, password);
-              navigation.navigate("CreateUsername");
+              await signIn(email, password);
+              return;
             } catch (e) {
               console.warn("sign in failed, attempting to sign up now");
             }
             try {
-              signUp(email, password);
-              navigation.navigate("CreateUsername");
+              await signUp(email, password);
             } catch (e) {
               console.error("sign up failed", e);
             }
