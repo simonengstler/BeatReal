@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import CreateGroupPage from "./components/pages/CreateGroup";
 import ExplorePage from "./components/pages/Explore";
-import HomePage from "./components/pages/Home";
+import MyGroupsPage from "./components/pages/MyGroups";
 import LandingPage from "./components/pages/Landing";
 import LoginPage from "./components/pages/Login";
 import { AuthProvider } from "./components/context/AuthContext";
@@ -19,17 +19,19 @@ export type RootStackParamList = {
   Login: undefined;
   GroupDetails: undefined;
   Settings: undefined;
+  "My Groups": undefined;
+  Explore: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootStackParamList>();
 
 function TabNavigator() {
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="My Groups"
-        component={HomePage}
+        component={MyGroupsPage}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="group" color={color} size={size} />
@@ -65,7 +67,7 @@ export default function App() {
         <RootStack.Navigator
           initialRouteName="Landing"
           screenOptions={{
-            headerLeft: () => null
+            headerLeft: () => null,
           }}
         >
           <RootStack.Screen

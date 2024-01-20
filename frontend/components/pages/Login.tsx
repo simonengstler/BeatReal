@@ -50,13 +50,19 @@ export default function LoginPage({ navigation }: Props) {
           onPress={() => {
             try {
               signIn(email, password);
-              navigation.navigate("Main");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Main" }],
+              });
             } catch (e) {
               console.warn("sign in failed, attempting to sign up now");
             }
             try {
               signUp(email, password);
-              navigation.navigate("Main");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "Main" }],
+              });
             } catch (e) {
               console.error("sign up failed", e);
             }

@@ -15,7 +15,12 @@ export default function LandingPage({ navigation }: Props) {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user !== undefined) navigation.navigate("Main");
+    if (user !== undefined) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Main" }],
+      });
+    }
   }, [user]);
 
   return (
