@@ -37,8 +37,7 @@ async function joinGroupRequest(username: string, groupId: string) {
 }
 
 export function JoinGroupModal({ url }: Props) {
-  const [modalVisible, setModalVisible] = useState(false);
-  console.log({ url });
+  const [modalVisible, setModalVisible] = useState(true);
   const groupId = url.split("/").pop();
 
   const queryClient = useQueryClient();
@@ -51,6 +50,9 @@ export function JoinGroupModal({ url }: Props) {
         queryKey: ["groups", username],
       });
       setModalVisible(false);
+    },
+    onError: (error) => {
+      console.log(error);
     },
   });
 
@@ -78,7 +80,7 @@ export function JoinGroupModal({ url }: Props) {
           <TouchableWithoutFeedback>
             <View
               style={{
-                height: "50%",
+                height: "30%",
                 paddingLeft: 20,
                 paddingRight: 20,
                 borderTopLeftRadius: 20,
@@ -86,8 +88,9 @@ export function JoinGroupModal({ url }: Props) {
                 backgroundColor: "white",
               }}
             >
-              <StyledText className="text-center font-bold text-3xl pt-6 tracking-tighter">
-                You were invited to join group {group.name}
+              <StyledText className="text-center font-bond text-3xl pt-6 tracking-tighter pb-8">
+                You were invited to join the group{" "}
+                <StyledText className="font-extrabold">{group.name}</StyledText>
               </StyledText>
 
               <StyledPressable
@@ -96,7 +99,9 @@ export function JoinGroupModal({ url }: Props) {
                 }}
                 className="bg-black px-4 py-3 rounded-lg mx-auto font-semibold"
               >
-                <StyledText className="text-white">Join Group</StyledText>
+                <StyledText className="text-white font-bold text-lg">
+                  Join Group
+                </StyledText>
               </StyledPressable>
             </View>
           </TouchableWithoutFeedback>

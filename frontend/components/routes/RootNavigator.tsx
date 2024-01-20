@@ -20,6 +20,7 @@ export type RootStackParamList = {
     groupId: string;
   };
   ShareSong: { groupId: string };
+  SongDetails: { spotifySongId: string };
 } & BottomNavigatorParamList;
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();

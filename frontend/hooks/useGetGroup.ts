@@ -1,7 +1,8 @@
+import { BACKEND_URL } from "@env";
 import { useQuery } from "@tanstack/react-query";
 
 async function getGroup(groupId: string) {
-  const res = await fetch(`/api/groups/${groupId}`);
+  const res = await fetch(`${BACKEND_URL}/api/groups/${groupId}`);
   return res.json();
 }
 
