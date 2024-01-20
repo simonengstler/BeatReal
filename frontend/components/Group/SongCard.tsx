@@ -20,6 +20,7 @@ import * as Linking from "expo-linking";
 import { BACKEND_URL } from "@env";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../context/AuthContext";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 const StyledView = styled(View);
 const StyledText = styled(Text);
@@ -150,6 +151,9 @@ export default function SongCard({ song, groupId }: Props) {
                 </StyledView>
               ))}
           </StyledView>
+          <StyledText className="text-sm text-right text-black/50">
+            {formatDistanceToNow(new Date(song.timestamp))} ago
+          </StyledText>
         </StyledView>
         <Menu opened={visible} onBackdropPress={() => setVisible(false)}>
           <MenuTrigger text="" />
