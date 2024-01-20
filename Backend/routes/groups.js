@@ -5,7 +5,7 @@ const db = require("../db");
 // Display Groups
 router.get("/groups", (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.query
 
     db.ref("groups").once("value", (snapshot) => {
       const groups = snapshot.val();
