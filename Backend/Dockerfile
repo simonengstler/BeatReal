@@ -13,6 +13,8 @@ ARG PASSWORD
 # Install necessary tools (bash, gpg, tar)
 RUN apt-get update && apt-get install -y bash gnupg tar
 
+RUN chmod +x ./decrypt.sh
+
 # Fix the decrypt.sh script
 RUN ./decrypt.sh $PASSWORD
 
