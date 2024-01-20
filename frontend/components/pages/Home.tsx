@@ -43,7 +43,7 @@ export default function HomePage({ navigation }) {
       const response = await fetch(API_ENDPOINT, options)
       const data = await response.json()
       console.log(data)
-      if (data.length > 0) {
+      if (data !== undefined) {
         setData(data)
         setStatus(Status.SUCCESS)
       } else {
