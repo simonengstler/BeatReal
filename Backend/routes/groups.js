@@ -138,4 +138,48 @@ router.post("/groups/:groupId/invite", async (req, res) => {
   }
 });
 
+// Share Song in Group
+router.post("/groups/share-song", async (req, res) => {
+  try {
+    const { userId, groupId, songLink } = req.body;
+
+    // Check if required parameters are provided
+    if (!userId || !groupId || !songLink) {
+      return res.status(400).json({ message: "userId, groupId, and songLink are required" });
+    }
+
+    // Fetch the existing group
+    const groupRef = db.ref(`groups/${groupId}`);
+    const existingGroupSnapshot = await groupRef.once("value");
+    const existingGroup = existingGroupSnapshot.val();
+
+    // Check if the group exists
+    if (!existingGroup) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    // Update the group to add the shared song
+    if (!existingGroup.sharedSongs) {
+      existingGroup.sharedSongs = [];
+    }
+
+    existingGroup.sharedSongs.push({
+      timestamp: Date.now(),
+      userId,
+      songLink,
+    });
+
+    // Save the updated group
+    await groupRef.update(existingGroup);
+
+    res.json({
+      message: "Song shared in the group successfully",
+      updatedGroup: existingGroup,
+    });
+  } catch (error) {
+    console.error("Error sharing song in group in Realtime Database", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
