@@ -1,17 +1,35 @@
-import { StatusBar } from "expo-status-bar";
-import { styled } from "nativewind";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
 import React from "react";
-import { Text, View } from "react-native";
+import ExplorePage from "./components/pages/Explore";
+import HomePage from "./components/pages/Home";
 
-const StyledText = styled(Text);
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View>
-      <StyledText className="text-red-900">
-        Open up App.js to start asdyour app!
-      </StyledText>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="My Groups"
+          component={HomePage}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <FontAwesome name="group" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Explore"
+          component={ExplorePage}
+          options={{
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="explore" size={size} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
