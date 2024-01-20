@@ -9,12 +9,15 @@ import HomePage from "./components/pages/Home";
 import LandingPage from "./components/pages/Landing";
 import LoginPage from "./components/pages/Login";
 import { AuthProvider } from "./components/context/AuthContext";
+import GroupDetailsPage from "./components/pages/GroupDetails";
+import { Button } from "react-native";
 
 export type RootStackParamList = {
   Landing: undefined;
   Main: undefined;
   CreateGroup: undefined;
   Login: undefined;
+  GroupDetails: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -52,7 +55,7 @@ export default function App() {
         <RootStack.Navigator
           initialRouteName="Landing"
           screenOptions={{
-            headerShown: false,
+            headerLeft: () => null
           }}
         >
           <RootStack.Screen
@@ -75,6 +78,13 @@ export default function App() {
               header: () => null,
             }}
             component={LoginPage}
+          />
+          <RootStack.Screen
+            name="GroupDetails"
+            options={{
+              header: () => null,
+            }}
+            component={GroupDetailsPage}
           />
           <RootStack.Screen name="Main" component={TabNavigator} />
         </RootStack.Navigator>

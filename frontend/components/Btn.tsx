@@ -16,10 +16,9 @@ const styles = StyleSheet.create({
     padding: 6,
     borderRadius: 4,
     backgroundColor: '#575151',
-    width: '50%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: 15,
+    marginBottom: 30,
   },
   text: {
     color: '#fff',

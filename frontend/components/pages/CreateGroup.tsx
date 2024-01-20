@@ -1,23 +1,30 @@
 import { useState } from "react"
 import { StyleSheet, Text, View, TextInput } from "react-native";
 import Btn from "../Btn";
+import { useAuth } from "../context/AuthContext";
 
-const API_ENDPOINT = ''
+const API_ENDPOINT = "https://beatreal-production.up.railway.app/api/groups"
 
 export default function CreateGroupPage({ navigation }) {
+
+  const [groupName, setGroupName] = useState('');
+  const { user } = useAuth()
 
   async function createGroupRequest() {
     const options = {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-        user_id: 1,
-        group_name: groupName
+        name: groupName,
+        userId: user.uid
       })
     }
     try {
       const response = await fetch(API_ENDPOINT, options)
       const data = await response.json()
-      if (data) {
+      if (data.id) {
         return true
       }
       return false
@@ -29,11 +36,13 @@ export default function CreateGroupPage({ navigation }) {
   async function handleChange() {
     const isSuccessful = await createGroupRequest()
     if (isSuccessful) {
-      navigation.navigate(``)
+      // navigation.navigate(``)
+      alert('Created group successfully')
+    } else {
+      alert('Group creation failed. Please try again later.')
     }
   }
 
-  const [groupName, setGroupName] = useState('');
   return (
     <View style={styles.container}>
       <Text style={{ fontSize: 20 }}>Create Group</Text>
@@ -44,7 +53,7 @@ export default function CreateGroupPage({ navigation }) {
       />
       <Btn 
         label={'Start new group'}
-        handleChange={() => alert(groupName)}
+        handleChange={handleChange}
         isDisabled={groupName === ""}
       />
     </View>
