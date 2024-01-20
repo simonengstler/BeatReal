@@ -25,8 +25,14 @@ export default function LandingPage({ navigation }: Props) {
 
   return (
     <StyledView className="flex flex-col justify-center px-6 bg-black h-full">
-      <StyledText className="text-6xl font-bold tracking-tighter text-white">
+      <StyledText className="text-6xl font-bold tracking-tighter text-white mb-4">
         Welcome to BeatReal.
+      </StyledText>
+      <StyledText className="text-lg tracking-tighter text-white">
+        Every week at a different time, everyone is notified to share a song.
+      </StyledText>
+      <StyledText className="text-lg tracking-tighter text-white">
+        A new and unique way to discover new songs with your friends.
       </StyledText>
       <StyledPressable
         className="mt-8 rounded-lg px-4 py-2 bg-white mr-auto"
