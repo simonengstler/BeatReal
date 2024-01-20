@@ -8,7 +8,7 @@ import ExplorePage from "./components/pages/Explore";
 import HomePage from "./components/pages/Home";
 import LandingPage from "./components/pages/Landing";
 import LoginPage from "./components/pages/Login";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { AuthProvider } from "./components/context/AuthContext";
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -47,31 +47,33 @@ function TabNavigator() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <RootStack.Navigator initialRouteName="Main">
-        {/* <RootStack.Screen
-          name="Landing"
-          options={{
-            header: () => null,
-          }}
-          component={LandingPage}
-        /> */}
-        <RootStack.Screen
-          name="CreateGroup"
-          options={{
-            header: () => null,
-          }}
-          component={CreateGroupPage}
-        />
-        {/* <RootStack.Screen
-          name="Login"
-          options={{
-            header: () => null,
-          }}
-          component={LoginPage}
-        /> */}
-        <RootStack.Screen name="Main" component={TabNavigator} />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <RootStack.Navigator initialRouteName="Landing">
+          <RootStack.Screen
+            name="Landing"
+            options={{
+              header: () => null,
+            }}
+            component={LandingPage}
+          />
+          <RootStack.Screen
+            name="CreateGroup"
+            options={{
+              header: () => null,
+            }}
+            component={CreateGroupPage}
+          />
+          <RootStack.Screen
+            name="Login"
+            options={{
+              header: () => null,
+            }}
+            component={LoginPage}
+          />
+          <RootStack.Screen name="Main" component={TabNavigator} />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
