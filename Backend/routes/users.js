@@ -8,7 +8,9 @@ router.post("/users", async (req, res) => {
 
     // Check if required parameters are provided
     if (!username || !userId) {
-      return res.status(400).json({ message: "username and userId are required" });
+      return res
+        .status(400)
+        .json({ message: "username and userId are required" });
     }
 
     // Check if the username already exists
@@ -29,7 +31,11 @@ router.post("/users", async (req, res) => {
 
 // Function to check if the username already exists
 async function isUsernameExists(username) {
-  const usersSnapshot = await db.ref("users").orderByChild("username").equalTo(username).once("value");
+  const usersSnapshot = await db
+    .ref("users")
+    .orderByChild("username")
+    .equalTo(username)
+    .once("value");
   return usersSnapshot.exists();
 }
 
@@ -48,6 +54,28 @@ router.get("/users", async (req, res) => {
   } catch (error) {
     console.error("Error fetching users from Realtime Database", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/users/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const userSnapshot = await db
+      .ref(`users`)
+      .orderByChild("userId")
+      .equalTo(userId)
+      .once("value");
+    const user = userSnapshot.val();
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json({ id: userId, username: user.username });
+  } catch (error) {
+    console.error("Error fetching user from Realtime Database", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
