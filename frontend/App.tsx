@@ -10,7 +10,7 @@ import LandingPage from "./components/pages/Landing";
 import LoginPage from "./components/pages/Login";
 import { AuthProvider } from "./components/context/AuthContext";
 import GroupDetailsPage from "./components/pages/GroupDetails";
-import { Button } from "react-native";
+import SettingsPage from "./components/pages/Settings";
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -18,6 +18,7 @@ export type RootStackParamList = {
   CreateGroup: undefined;
   Login: undefined;
   GroupDetails: undefined;
+  Settings: undefined;
 };
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -41,6 +42,15 @@ function TabNavigator() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="explore" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsPage}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="settings" size={size} color={color} />
           ),
         }}
       />
