@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Touchable } from "react-native";
 
-export default function GroupCard({ group }) {
+export default function SongCard({ song }) {
   return (
     <View style={styles.row}>
-      <Text style={styles.heading}>{ group.name }</Text>
+      <Text style={styles.heading}>{ song.link }</Text>
+      <Text style={styles.heading}>{ song.username }</Text>
     </View>
   );
 }
