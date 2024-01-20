@@ -38,7 +38,7 @@ async function joinGroupRequest(username: string, groupId: string) {
 
 export function JoinGroupModal({ url }: Props) {
   const [modalVisible, setModalVisible] = useState(false);
-
+  console.log({ url });
   const groupId = url.split("/").pop();
 
   const queryClient = useQueryClient();
@@ -53,6 +53,10 @@ export function JoinGroupModal({ url }: Props) {
       setModalVisible(false);
     },
   });
+
+  if (!group) {
+    return null;
+  }
 
   return (
     <Modal

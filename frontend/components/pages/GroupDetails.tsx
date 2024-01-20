@@ -50,7 +50,7 @@ export default function GroupDetailsPage({ route, navigation }: Props) {
           </StyledText>
         ) : (
           sharedSongs.map((song) => (
-            <SongCard song={song} key={song.sharedSongId} />
+            <SongCard song={song} groupId={groupId} key={song.sharedSongId} />
           ))
         )}
       </ScrollView>

@@ -1,8 +1,15 @@
+export type Reaction = {
+  username: string;
+  reaction: string;
+  timestamp: number;
+};
+
 export type Song = {
   sharedSongId: string;
   timestamp: number;
   username: string;
   songLink: string;
+  reactions?: Reaction[];
 };
 
 export type Group = {

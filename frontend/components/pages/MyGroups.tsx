@@ -67,7 +67,7 @@ export default function MyGroupsPage({ navigation }: Props) {
           </StyledText>
         </StyledPressable>
       </StyledView>
-      {url && <JoinGroupModal url={url} />}
+      {url?.startsWith("beatreal://") && <JoinGroupModal url={url} />}
     </StyledScrollView>
   );
 }
