@@ -1,9 +1,17 @@
 import { useState, useEffect } from "react"
 import { ScrollView, StyleSheet, View, Text } from "react-native";
-import GroupCard from "../GroupCard";
-import CreateGroupBtn from "../CreateGroupBtn";
+import GroupCard from "../GroupPage/GroupCard";
+import CreateGroupBtn from "../GroupPage/CreateGroupBtn";
+import Message from "../GroupPage/Message";
 
-const data = [
+enum Status {
+  LOADING = "loading",
+  SUCCESS = "success",
+  EMPTY_RESULTS = "empty_results",
+  ERROR = "error",
+}
+
+const mockData = [
   { id: 1, name: 'Group 1' },
   { id: 2, name: 'Group 2' },
   { id: 3, name: 'Group 3' },
@@ -12,16 +20,48 @@ const data = [
   { id: 6, name: 'Group 6' },
 ]
 
+const API_ENDPOINT = ""
+
 export default function HomePage() {
+
+  const [status, setStatus] = useState<Status>(Status.LOADING)
+  const [data, setData] = useState([])
+
+  async function fetchData() {
+    try {
+      const response = await fetch(API_ENDPOINT)
+      const data = response.json()
+      if (data.length > 0) {
+        setData(data)
+        setStatus(Status.SUCCESS)
+      } else {
+        setStatus(Status.EMPTY_RESULTS)
+      }
+    } catch (e) {
+      setStatus(Status.SUCCESS)
+      setData(mockData)
+      // setStatus(Status.ERROR)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <View style={styles.container}>
+      
       <ScrollView>
-        {data.map(group => <GroupCard group={group} />)}
+        { status === Status.LOADING && <Message label="Loading..." /> }
+        { status === Status.ERROR && <Message label="Oops! Something went wrong in the server. Please try again later." />  }
+        { status === Status.EMPTY_RESULTS && <Message label="So empty... Start a new group below!" />  }
+        { status === Status.SUCCESS && data.map(group => <GroupCard group={group} />)}
       </ScrollView>
+
       <View>
         <CreateGroupBtn />
       </View>
+
     </View>
   );
 }
