@@ -7,6 +7,8 @@ import GroupDetailsPage from "../pages/GroupDetails";
 import LandingPage from "../pages/Landing";
 import LoginPage from "../pages/Login";
 import { BottomNavigator, BottomNavigatorParamList } from "./BottomNavigator";
+import ShareSongPage from "../pages/ShareSong";
+import { Button, Text } from "react-native";
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -14,7 +16,10 @@ export type RootStackParamList = {
   CreateGroup: undefined;
   Login: undefined;
   CreateUsername: undefined;
-  GroupDetails: { sharedSongs?: Song[] };
+  GroupDetails: {
+    groupId: string;
+  };
+  ShareSong: { groupId: string };
 } & BottomNavigatorParamList;
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
@@ -75,6 +80,22 @@ export function RootNavigator() {
             },
           }}
           component={CreateGroupPage}
+        />
+        <RootStack.Screen
+          name="ShareSong"
+          options={({ navigation }) => ({
+            headerLeft: () => (
+              <Button title={"Back"} onPress={() => navigation.goBack()} />
+            ),
+            headerTitle: "",
+            headerTitleStyle: {
+              color: "#fff",
+            },
+            headerStyle: {
+              backgroundColor: "#000000ee",
+            },
+          })}
+          component={ShareSongPage}
         />
       </RootStack.Navigator>
     </NavigationContainer>

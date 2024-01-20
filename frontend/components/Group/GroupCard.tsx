@@ -10,7 +10,7 @@ const StyledText = styled(Text);
 const StyledView = styled(View);
 
 interface Props {
-  group: Group;
+  group: Group & { id: string };
   navigation: BottomTabNavigationProp<
     RootStackParamList,
     "My Groups",
@@ -23,7 +23,12 @@ export default function GroupCard({ group, navigation }: Props) {
     <StyledTouchableOpacity
       className="mx-auto p-4 mb-4 bg-transparent border-2 border-white w-full rounded-lg"
       onPress={() =>
-        navigation.navigate("GroupDetails", { sharedSongs: group.sharedSongs })
+        navigation.navigate("GroupDetails", {
+          sharedSongs: group.sharedSongs,
+          name: group.name,
+          groupId: group.id,
+          members: group.members,
+        })
       }
     >
       <StyledText className="font-bold text-lg tracking-tight text-white mb-2">

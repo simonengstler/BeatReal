@@ -1,8 +1,15 @@
-import { useState } from "react"
+import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Menu, MenuOptions, MenuOption, MenuTrigger, MenuProvider } from 'react-native-popup-menu';
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  MenuProvider,
+} from "react-native-popup-menu";
+import { Song } from "../../types/database";
 
-export default function SongCard({ song }) {
+export default function SongCard({ song }: { song: Song }) {
   const [visible, setVisible] = useState(false);
 
   const onLongPressCard = () => {
@@ -10,31 +17,44 @@ export default function SongCard({ song }) {
   };
 
   const onMenuOptionSelect = (value) => {
-    alert(value)
-    setVisible(false)
-  }
+    alert(value);
+    setVisible(false);
+  };
 
   return (
     <TouchableOpacity onLongPress={onLongPressCard}>
       <MenuProvider>
         <View style={styles.row}>
           <Text style={styles.heading}>{song.username} shared a song!</Text>
-          <Text>{song.link}</Text>
+          <Text>{song.songLink}</Text>
           <Menu opened={visible} onBackdropPress={() => setVisible(false)}>
-            <MenuTrigger text='' />
-            <MenuOptions customStyles={{ optionsWrapper: styles.menuOptionsWrapper }}>
-              <MenuOption onSelect={() => onMenuOptionSelect("Option 1")} text='🤏' />
-              <MenuOption onSelect={() => onMenuOptionSelect("Option 2")} text='👌' />
-              <MenuOption onSelect={() => onMenuOptionSelect("Option 3")} text='👍' />
-              <MenuOption onSelect={() => onMenuOptionSelect("Option 4")} text='🖤' />
+            <MenuTrigger text="" />
+            <MenuOptions
+              customStyles={{ optionsWrapper: styles.menuOptionsWrapper }}
+            >
+              <MenuOption
+                onSelect={() => onMenuOptionSelect("Option 1")}
+                text="🤏"
+              />
+              <MenuOption
+                onSelect={() => onMenuOptionSelect("Option 2")}
+                text="👌"
+              />
+              <MenuOption
+                onSelect={() => onMenuOptionSelect("Option 3")}
+                text="👍"
+              />
+              <MenuOption
+                onSelect={() => onMenuOptionSelect("Option 4")}
+                text="🖤"
+              />
             </MenuOptions>
           </Menu>
         </View>
       </MenuProvider>
     </TouchableOpacity>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
   row: {
@@ -43,7 +63,7 @@ const styles = StyleSheet.create({
     marginLeft: "auto",
     padding: 15,
     marginBottom: 15,
-    backgroundColor: '#dee1ec',
+    backgroundColor: "#dee1ec",
     borderRadius: 6,
   },
   heading: {
@@ -55,8 +75,8 @@ const styles = StyleSheet.create({
   },
   menuOptionsWrapper: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     borderRadius: 10,
   },
-})
+});

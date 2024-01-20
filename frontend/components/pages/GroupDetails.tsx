@@ -1,65 +1,74 @@
-import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
-import SongCard from "../Group/SongCard";
-import React from "react";
-import { styled } from "nativewind";
-import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
-import { RootStackParamList } from "../routes/RootNavigator";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-
-const mockData = [
-  { link: "spotify.com", username: "sebastian" },
-  { link: "spotify.com", username: "sebastian" },
-  { link: "spotify.com", username: "sebastian" },
-  { link: "spotify.com", username: "sebastian" },
-];
+import { styled } from "nativewind";
+import React from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import SongCard from "../Group/SongCard";
+import { RootStackParamList } from "../routes/RootNavigator";
+import { SvgUri } from "react-native-svg";
+import { useGetGroups } from "../../hooks/useGetGroups";
 
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
+const StyledView = styled(View);
 
 type Props = NativeStackScreenProps<RootStackParamList, "GroupDetails">;
 
-export default function GroupDetailsPage({ route }: Props) {
-  const { sharedSongs } = route.params;
+export default function GroupDetailsPage({ route, navigation }: Props) {
+  const { groupId } = route.params;
+  const { data: groups } = useGetGroups();
+  const group = groups?.find((group) => group.id === groupId);
+
+  if (!group) {
+    return null;
+  }
+
+  const { name, members, sharedSongs } = group;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.heading}>List of songs shared</Text>
-      <ScrollView>
-        {mockData.map((song) => (
-          <SongCard song={song} />
+    <StyledView className="pt-20 pb-10 px-6 bg-black h-full">
+      <StyledText className="font-bold tracking-tighter text-white text-3xl pb-6">
+        {name}
+      </StyledText>
+      <StyledView className="border-2 rounded-lg border-white p-4 mb-8">
+        {members.map((member) => (
+          <StyledView className="flex-row items-center" key={member}>
+            <SvgUri
+              width={28}
+              height={28}
+              style={{ marginRight: 8 }}
+              uri={`https://api.dicebear.com/7.x/pixel-art/svg?seed=${member}`}
+            />
+            <StyledText className="text-white text-lg">{member}</StyledText>
+          </StyledView>
         ))}
+      </StyledView>
+      <ScrollView>
+        {sharedSongs == undefined ? (
+          <StyledText className="text-white text-lg">
+            No songs found. Be the first to share!
+          </StyledText>
+        ) : (
+          sharedSongs.map((song) => <SongCard song={song} />)
+        )}
       </ScrollView>
-      <View style={styles.buttonContainer}>
+      <StyledView className="flex-row">
         <StyledPressable
-          className="mx-auto border-2 bg-white rounded px-4 py-2 bg-black/80"
+          className="mx-auto border-2 bg-white rounded-lg px-4 py-2"
           onPress={() => {}}
         >
           <StyledText className="font-bold text-lg">Invite User</StyledText>
         </StyledPressable>
         <StyledPressable
-          className="mx-auto border-2 bg-white rounded px-4 py-2"
-          onPress={() => {}}
+          className="mx-auto border-2 bg-white rounded-lg px-4 py-2"
+          onPress={() => {
+            navigation.navigate("ShareSong", {
+              groupId: groupId,
+            });
+          }}
         >
           <StyledText className="font-bold text-lg">Share Song</StyledText>
         </StyledPressable>
-      </View>
-    </View>
+      </StyledView>
+    </StyledView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 50,
-    flex: 1,
-  },
-  heading: {
-    textAlign: "center",
-    fontSize: 20,
-    marginTop: 15,
-    marginBottom: 15,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-});

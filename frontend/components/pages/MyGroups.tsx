@@ -15,6 +15,7 @@ import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { useState, useCallback } from "react";
 import { Group } from "../../types/database";
+import { useGetGroups } from "../../hooks/useGetGroups";
 
 type Props = BottomTabScreenProps<RootStackParamList, "My Groups">;
 
@@ -23,27 +24,17 @@ const StyledScrollView = styled(ScrollView);
 const StyledPressable = styled(Pressable);
 const StyledText = styled(Text);
 
-async function fetchMyGroups(username: string) {
-  const response = await fetch(
-    `${BACKEND_URL}/api/groups?username=${username}`
-  );
-  const data = await response.json();
-  return Object.values(data) as Group[];
-}
-
 export default function MyGroupsPage({ navigation }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
   const { username } = useAuth();
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["groups", username],
-    queryFn: () => fetchMyGroups(username),
-    enabled: username !== undefined,
-  });
+  const { data, isLoading, isError, refetch } = useGetGroups();
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     refetch().finally(() => setRefreshing(false));
   }, []);
+
+  console.log({ data });
 
   return (
     <StyledScrollView
