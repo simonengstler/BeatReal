@@ -11,6 +11,10 @@ EXPOSE 3000:3000
 ARG PASSWORD
 ENV PASSWORD=$PASSWORD
 
-RUN sh ./decrypt.sh $PASSWORD
+# Install necessary tools (bash, gpg, tar)
+RUN apt-get update && apt-get install -y bash gnupg tar
 
-CMD ["node", "app.js"]
+# Fix the decrypt.sh script
+RUN sed -i '12s/read -s/read -r/' decrypt.sh
+
+CMD ["bash", "-c", "./decrypt.sh $PASSWORD"]
