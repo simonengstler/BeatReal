@@ -1,7 +1,7 @@
-import { BACKEND_URL } from "@env";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { useQuery } from "@tanstack/react-query";
+import * as Linking from "expo-linking";
 import { styled } from "nativewind";
+import { useCallback, useState } from "react";
 import {
   Pressable,
   RefreshControl,
@@ -9,13 +9,11 @@ import {
   Text,
   View,
 } from "react-native";
+import { useGetGroups } from "../../hooks/useGetGroups";
 import GroupCard from "../Group/GroupCard";
 import Message from "../Group/Message";
-import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../routes/RootNavigator";
-import { useState, useCallback } from "react";
-import { Group } from "../../types/database";
-import { useGetGroups } from "../../hooks/useGetGroups";
+import { JoinGroupModal } from "../Group/JoinGroupModal";
 
 type Props = BottomTabScreenProps<RootStackParamList, "My Groups">;
 
@@ -27,12 +25,13 @@ const StyledText = styled(Text);
 export default function MyGroupsPage({ navigation }: Props) {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { username } = useAuth();
   const { data, isLoading, isError, refetch } = useGetGroups();
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     refetch().finally(() => setRefreshing(false));
   }, []);
+
+  const url = Linking.useURL();
 
   return (
     <StyledScrollView
@@ -68,6 +67,7 @@ export default function MyGroupsPage({ navigation }: Props) {
           </StyledText>
         </StyledPressable>
       </StyledView>
+      {url && <JoinGroupModal url={url} />}
     </StyledScrollView>
   );
 }

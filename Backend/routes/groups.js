@@ -54,6 +54,25 @@ router.post("/groups", (req, res) => {
   }
 });
 
+router.get("/groups/:groupId", async (req, res) => {
+  const groupId = req.params.groupId;
+
+  try {
+    const groupSnapshot = await db.ref(`groups/${groupId}`).once("value");
+    const group = groupSnapshot.val();
+
+    // Check if the group exists
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    res.json(group);
+  } catch (error) {
+    console.error("Error fetching group from Realtime Database", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 // Delete Group
 router.delete("/groups/:groupId", async (req, res) => {
   const groupId = req.params.groupId;
