@@ -4,7 +4,7 @@
 tarfile="private.tar"
 
 # Define the directories to zip
-directory="./private"
+directory="./private .env"
 
 # Use the zip command to zip all files in the specified directories
 tar -cf $tarfile $directory

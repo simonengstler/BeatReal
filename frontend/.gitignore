@@ -4,6 +4,7 @@
 node_modules/
 private/
 private.tar
+.env
 
 # Expo
 .expo/
