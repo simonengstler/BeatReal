@@ -1,35 +1,42 @@
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Pressable } from "react-native";
 import SongCard from "../Group/SongCard";
-import Btn from "../Btn";
+import React from "react";
+import { styled } from "nativewind";
 
 const mockData = [
-  { link: 'spotify.com', username: 'sebastian' },
-  { link: 'spotify.com', username: 'sebastian' },
-  { link: 'spotify.com', username: 'sebastian' },
-  { link: 'spotify.com', username: 'sebastian' },
-]
+  { link: "spotify.com", username: "sebastian" },
+  { link: "spotify.com", username: "sebastian" },
+  { link: "spotify.com", username: "sebastian" },
+  { link: "spotify.com", username: "sebastian" },
+];
+
+const StyledPressable = styled(Pressable);
+const StyledText = styled(Text);
 
 export default function GroupDetailsPage({ route }) {
-
-  const { songs } = route.params
+  const { songs } = route.params;
 
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>List of songs shared</Text>
       <ScrollView>
-        {mockData.map(song => <SongCard song={song} />)}
+        {mockData.map((song) => (
+          <SongCard song={song} />
+        ))}
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <Btn
-          label={'Invite user'}
-          handleChange={() => null}
-          isDisabled={false}
-        />
-        <Btn
-          label={'Share a song'}
-          handleChange={() => null}
-          isDisabled={false}
-        />
+        <StyledPressable
+          className="mx-auto border-2 bg-white rounded px-4 py-2 bg-black/80"
+          onPress={() => {}}
+        >
+          <StyledText className="font-bold text-lg">Invite User</StyledText>
+        </StyledPressable>
+        <StyledPressable
+          className="mx-auto border-2 bg-white rounded px-4 py-2"
+          onPress={() => {}}
+        >
+          <StyledText className="font-bold text-lg">Share Song</StyledText>
+        </StyledPressable>
       </View>
     </View>
   );
@@ -48,6 +55,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-around"
-  }
-})
+    justifyContent: "space-around",
+  },
+});

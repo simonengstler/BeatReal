@@ -15,7 +15,24 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export function BottomNavigator() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: "#000000ee",
+          borderTopWidth: 0,
+          paddingTop: 4,
+        },
+        headerStyle: {
+          backgroundColor: "#000000ee",
+          elevation: 0,
+          shadowOpacity: 0,
+          borderBottomWidth: 0,
+        },
+        headerTitleStyle: {
+          color: "#fff",
+        },
+      }}
+    >
       <Tab.Screen
         name="My Groups"
         component={MyGroupsPage}
