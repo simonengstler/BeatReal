@@ -16,7 +16,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../routes/RootNavigator";
 import { useGetGroups } from "../../hooks/useGetGroups";
 
-async function createGroupRequest(
+async function shareSongRequest(
   username: string,
   groupId: string,
   songLink: string
@@ -54,7 +54,7 @@ export default function ShareSongPage({ navigation, route }: Props) {
 
   const { mutateAsync } = useMutation({
     mutationFn: () =>
-      createGroupRequest(username, route.params.groupId, songLink),
+      shareSongRequest(username, route.params.groupId, songLink),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["groups", username],
