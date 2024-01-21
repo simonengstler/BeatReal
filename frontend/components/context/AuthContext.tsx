@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(user);
         setUsername((await AsyncStorage.getItem("username")) ?? undefined);
       } else {
+        await AsyncStorage.setItem("username", undefined);
         setUser(undefined);
         setUsername(undefined);
       }
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     await firebaseAuth.signOut();
+    await AsyncStorage.setItem("username", undefined);
     setUser(undefined);
   };
 
