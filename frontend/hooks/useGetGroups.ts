@@ -16,15 +16,6 @@ async function fetchMyGroups(username: string) {
   });
 }
 
-async function fetchPublicGroups() {
-  console.log("fetching top songs")
-  const response = await fetch(
-    `${BACKEND_URL}/api/top-songs`
-  );
-  const data = await response.json();
-  return data.topSongs
-}
-
 export function useGetGroups() {
   const { username } = useAuth();
   return useQuery({
@@ -34,9 +25,3 @@ export function useGetGroups() {
   });
 }
 
-export function useGetPublicGroups() {
-  return useQuery({
-    queryKey: ["top-songs"],
-    queryFn: () => fetchPublicGroups(),
-  });
-}

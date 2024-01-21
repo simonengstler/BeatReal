@@ -2,14 +2,14 @@ import { styled } from "nativewind";
 import React from "react";
 import { ScrollView, Text, View } from "react-native";
 import SongCard from "../Group/SongCard";
-import { useGetPublicGroups } from "../../hooks/useGetGroups";
+import { useGetTopGroups } from "../../hooks/useGetSongs";
 
 const StyledText = styled(Text);
 const StyledView = styled(View);
 
 export default function ExplorePage() {
 
-  const { data: songs } = useGetPublicGroups();
+  const { data: songs } = useGetTopGroups();
 
   return (
     <StyledView className="pt-8 pb-10 px-6 bg-black h-full">
