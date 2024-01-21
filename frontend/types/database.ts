@@ -18,3 +18,11 @@ export type Group = {
   members: string[];
   sharedSongs?: Song[];
 };
+
+export type TopSong = {
+  songLink: string;
+  groupId: string;
+  timestamp: number;
+  reactionCount: number;
+  username: string; 
+}
