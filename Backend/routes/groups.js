@@ -254,7 +254,7 @@ router.post(
 );
 
 // Endpoint to get the top 5 songs from all groups
-router.get("/groups/top-songs", async (req, res) => {
+router.get("/top-songs", async (req, res) => {
   try {
     const groupsSnapshot = await db.ref("groups").once("value");
     const topSongs = [];
