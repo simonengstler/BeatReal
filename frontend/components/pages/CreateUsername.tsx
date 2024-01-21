@@ -71,11 +71,7 @@ export default function CreateUsernamePage({ navigation }: Props) {
         <StyledPressable
           className="mt-6 rounded-lg px-4 py-2 bg-white"
           onPress={async () => {
-            try {
-              await mutateAsync();
-            } catch (e) {
-              console.warn("Select username failed");
-            }
+            await mutateAsync();
           }}
         >
           <StyledText className="text-lg font-bold">Continue</StyledText>
