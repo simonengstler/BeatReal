@@ -65,13 +65,13 @@ export function InviteFriendsButton({ groupId }: Props) {
                   className="border-slate-400 rounded-lg border-2 px-5 py-3 mb-3 mt-4 text leading-[0px] text-black"
                   textContentType="URL"
                   selectTextOnFocus={false}
-                  value={`beatreal://group/${groupId}`}
+                  value={`beatreal://${groupId}`}
                   autoCapitalize="none"
                 />
 
                 <StyledPressable
                   onPress={() =>
-                    Clipboard.setStringAsync(`beatreal://group/${groupId}`)
+                    Clipboard.setStringAsync(`beatreal://${groupId}`)
                   }
                   className="bg-black px-4 py-3 rounded-lg mx-auto font-semibold"
                 >
